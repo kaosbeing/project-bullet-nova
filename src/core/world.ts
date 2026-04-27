@@ -39,7 +39,6 @@ export default class World {
         if (components.length === 0) return []; // Skip si pas d'arg
 
         let stores = components.map((c) => this.getStore(c));
-        console.log('stores.length', stores.length);
 
         // On récup le plus petit store pour avoir le moins d'opérations
         const baseStore = stores.reduce((a, b) =>
