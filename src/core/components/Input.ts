@@ -1,9 +1,17 @@
 import { Vector2 } from '../utils/Vector2.ts';
-import type { InputAction } from '../../systems/InputActions.ts';
+import Component from './Component.ts';
 
 type KeyCode = string;
 
-export default class Input {
+type InputAction =
+    | 'move_up'
+    | 'move_down'
+    | 'move_left'
+    | 'move_right'
+    | 'dash'
+    | 'primary_fire';
+
+export default class Input extends Component {
     mousePosition = new Vector2();
     private pressedKeys = new Set<KeyCode>();
 
@@ -17,6 +25,7 @@ export default class Input {
      * Init les event listener relatifs aux touches
      */
     constructor(bindings: Record<InputAction, KeyCode[]>) {
+        super();
         this.bindings = bindings;
 
         window.addEventListener('keydown', (e) => {

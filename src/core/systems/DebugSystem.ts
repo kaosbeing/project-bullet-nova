@@ -6,13 +6,7 @@ export default function debugSystem(
     world: World,
     ctx: CanvasRenderingContext2D
 ) {
-    const corePhysics = world.getStore(CorePhysics);
-    const positions = world.getStore(Position);
-
-    for (const [entity, physics] of corePhysics.entries()) {
-        const position = positions.get(entity);
-        if (!position) continue;
-
+    for (const [_, physics, position] of world.query(CorePhysics, Position)) {
         ctx.fillStyle = 'black';
 
         // CROSS AT ENTITY'S POSITION

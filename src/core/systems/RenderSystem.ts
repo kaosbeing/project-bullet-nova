@@ -6,13 +6,7 @@ export default function renderSystem(
     world: World,
     ctx: CanvasRenderingContext2D
 ) {
-    const positions = world.getStore(Position);
-    const renderables = world.getStore(Render);
-
-    for (const [entity, render] of renderables.entries()) {
-        const pos = positions.get(entity);
-        if (!pos) continue;
-
+    for (const [_, render, pos] of world.query(Render, Position)) {
         ctx.fillStyle = render.color;
         ctx.fillRect(
             pos.x - render.width / 2,

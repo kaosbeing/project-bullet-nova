@@ -19,6 +19,10 @@ class ComponentStore<T> {
     entries() {
         return this.data.entries();
     }
+
+    size() {
+        return this.data.size;
+    }
 }
 
 export default ComponentStore;

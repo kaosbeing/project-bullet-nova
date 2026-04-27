@@ -3,13 +3,7 @@ import CorePhysics from '../components/CorePhysics.ts';
 import Position from '../components/Position.ts';
 
 export default function physicsSystem(world: World, delta: number) {
-    const physics = world.getStore(CorePhysics);
-    const positions = world.getStore(Position);
-
-    for (const [entity, physic] of physics.entries()) {
-        const pos = positions.get(entity);
-        if (!pos) continue;
-
+    for (const [_, physic, pos] of world.query(CorePhysics, Position)) {
         for (const force of physic.forces) {
             physic.velocity.add(force);
         }
