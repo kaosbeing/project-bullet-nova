@@ -1,6 +1,7 @@
 import Entity from './Entity.ts';
 import ComponentStore from './ComponentStore.ts';
 import type Component from './components/Component.ts';
+import type { CollisionEvent } from './utils/CollisionEvent.ts';
 
 // C'est un hack ce truc mais azy ça marche
 // Dit à TS que c'est pour init la-dite classe T
@@ -9,6 +10,7 @@ type ComponentClass<T extends Component> = new (...args: any[]) => T;
 export default class World {
     nextId = 0;
     entities: Entity[] = [];
+    collisions: CollisionEvent[] = [];
 
     private stores = new Map<Component, ComponentStore<Component>>();
 
@@ -33,9 +35,16 @@ export default class World {
         return this.stores.get(type)! as ComponentStore<T>;
     }
 
+    /**
+     * Query all the entities with its associated data, that have all the queried Components
+     * -> J'pense ça sera un des premiers trucs à optimiser quand y'aura davantage d'entités
+     *
+     * @param components List of Components to query
+     * @return Array of entities with data from components
+     */
     query<T extends Component[]>(
         ...components: { [K in keyof T]: ComponentClass<T[K]> }
-    ): Iterable<[number, ...T]> {
+    ): Array<[number, ...T]> {
         if (components.length === 0) return []; // Skip si pas d'arg
 
         let stores = components.map((c) => this.getStore(c));
@@ -44,13 +53,15 @@ export default class World {
         const baseStore = stores.reduce((a, b) =>
             a.size() < b.size() ? a : b
         );
+
+        // Pour re-trier le résultat
         const indexOfBaseStore = stores.indexOf(baseStore);
         stores.splice(indexOfBaseStore, 1);
 
         const result: Array<[number, ...T]> = [];
 
         /**
-         * Boucle sur les entités du plus petit store pour regarder si elles sont dans les stores des autres components demandés.
+         * Boucle sur les entités pour regarder si elles ont les autres composants demandés.
          */
         for (const [entity, firstComponent] of baseStore.entries()) {
             const tuple: [number, ...Array<Component>] = [entity];
@@ -64,6 +75,7 @@ export default class World {
                 }
                 tuple.push(component);
             }
+
             // +1 parce qu'on a l'id de l'entité à 0
             tuple.splice(indexOfBaseStore + 1, 0, firstComponent);
 

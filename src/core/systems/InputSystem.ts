@@ -14,6 +14,7 @@ export default function inputSystem(world: World) {
 
         moveDirection.normalize();
 
-        physics.forces.push(moveDirection.scale(205));
+        // TODO - Gérer la MS différemment
+        physics.forces.push(moveDirection.scale(100));
     }
 }

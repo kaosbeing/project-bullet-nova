@@ -80,6 +80,14 @@ export class Vector2 {
     }
 
     /**
+     * Produit scalaire (dot product)
+     * @param v
+     */
+    dot(v: Vector2): number {
+        return this.x * v.x + this.y * v.y;
+    }
+
+    /**
      * Retourne la longueur du vecteur
      */
     length() {

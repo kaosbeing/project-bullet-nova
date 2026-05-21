@@ -1,4 +1,5 @@
 import Component from './Component.ts';
+import type { Vector2 } from '../utils/Vector2.ts';
 
 export default class Position extends Component {
     public x: number;
@@ -8,5 +9,15 @@ export default class Position extends Component {
         super();
         this.y = y;
         this.x = x;
+    }
+
+    /**
+     * Utilitaire pour déplacer les coordonnées selon les valeurs d'un vecteur.
+     * @param v
+     */
+    applyVector(v: Vector2): Position {
+        this.x = this.x + v.x;
+        this.y = this.y + v.y;
+        return this;
     }
 }
