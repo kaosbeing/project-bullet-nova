@@ -1,5 +1,5 @@
 import Component from './Component.ts';
-import type { Vector2 } from '../utils/Vector2.ts';
+import type { Vector2 } from '../class/Vector2.ts';
 
 export default class Position extends Component {
     public x: number;

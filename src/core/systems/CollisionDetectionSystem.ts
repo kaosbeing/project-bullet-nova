@@ -1,7 +1,7 @@
 import type World from '../world.ts';
 import BoundingBox from '../components/BoundingBox.ts';
 import Position from '../components/Position.ts';
-import { Vector2 } from '../utils/Vector2.ts';
+import { Vector2 } from '../class/Vector2.ts';
 
 /**
  * DU COUP des notes pour le futur :

@@ -3,7 +3,7 @@ import './reset.css';
 import World from './core/world.ts';
 import renderSystem from './core/systems/RenderSystem.ts';
 import physicsSystem from './core/systems/PhysicsSystem.ts';
-import { Vector2 } from './core/utils/Vector2.ts';
+import { Vector2 } from './core/class/Vector2.ts';
 import Render from './core/components/Render.ts';
 import CorePhysics from './core/components/CorePhysics.ts';
 import Position from './core/components/Position.ts';

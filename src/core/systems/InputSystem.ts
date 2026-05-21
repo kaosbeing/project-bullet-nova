@@ -1,7 +1,7 @@
 import type World from '../world.ts';
 import CorePhysics from '../components/CorePhysics.ts';
 import Input from '../components/Input.ts';
-import { Vector2 } from '../utils/Vector2.ts';
+import { Vector2 } from '../class/Vector2.ts';
 
 export default function inputSystem(world: World) {
     for (const [_, input, physics] of world.query(Input, CorePhysics)) {
