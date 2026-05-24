@@ -1,4 +1,4 @@
-import type Entity from '../Entity.ts';
+import type Entity from './Entity.ts';
 import type Coordinates from './Coordinates.ts';
 
 export default class Camera {

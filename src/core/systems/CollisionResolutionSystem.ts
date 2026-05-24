@@ -1,4 +1,4 @@
-import type World from '../world.ts';
+import type World from '../class/world.ts';
 import Position from '../components/Position.ts';
 import CorePhysics from '../components/CorePhysics.ts';
 

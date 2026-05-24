@@ -1,7 +1,7 @@
 import Entity from './Entity.ts';
 import ComponentStore from './ComponentStore.ts';
-import type Component from './components/Component.ts';
-import type { CollisionEvent } from './class/CollisionEvent.ts';
+import type Component from '../components/Component.ts';
+import type { CollisionEvent } from './CollisionEvent.ts';
 
 // C'est un hack ce truc mais azy ça marche
 // Dit à TS que c'est pour init la-dite classe T

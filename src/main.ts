@@ -1,6 +1,6 @@
 import './reset.css';
 
-import World from './core/world.ts';
+import World from './core/class/world.ts';
 import renderSystem from './core/systems/RenderSystem.ts';
 import physicsSystem from './core/systems/PhysicsSystem.ts';
 import { Vector2 } from './core/class/Vector2.ts';
@@ -98,7 +98,6 @@ function gameLoop(time: number) {
     // SYSTEMS INIT
     DebugSystem.init();
     CameraSystem.init(ctx, camera, canvas);
-    DebugSystem.displayBackgroundGrid();
 
     // GAMEPLAY SYSTEMS
     inputSystem(world);
@@ -107,6 +106,8 @@ function gameLoop(time: number) {
     collisionResolutionSystem(world);
 
     // RENDERING
+    DebugSystem.displayBackgroundGrid();
+
     CameraSystem.update(world, camera, delta);
     renderSystem(world, ctx);
 
