@@ -58,10 +58,8 @@ export default function collisionResolutionSystem(world: World) {
             (-(1 + restitutionCoeff) * velocityAlongNormal) /
             (invMassA + invMassB);
 
-        // Impulse vector
-        const impulse = contact.normal.clone().scale(impulseMagnitude);
-
         // Apply impulse
+        const impulse = contact.normal.clone().scale(impulseMagnitude);
         physA.velocity.sub(impulse.clone().scale(invMassA));
         physB.velocity.add(impulse.clone().scale(invMassB));
 

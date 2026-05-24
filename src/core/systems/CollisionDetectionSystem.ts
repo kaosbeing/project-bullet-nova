@@ -37,7 +37,6 @@ export default function collisionSystem(world: World) {
             if (overlapX <= 0 || overlapY <= 0) continue;
 
             // Collision détectée
-
             if (overlapX < overlapY) {
                 // collision horizontale
                 const normalX = new Vector2(Math.sign(dx), 0);
