@@ -12,8 +12,12 @@ type InputAction =
     | 'primary_fire';
 
 export default class Input extends Component {
-    mousePosition = new Vector2();
+    // Position de la souris DANS L'ECRAN = aka bounding box, PAS DANS LE MONDE
+    private mousePosition = new Vector2();
     private pressedKeys = new Set<KeyCode>();
+
+    // Le deltaY des évènements de scroll encore non résolu
+    private scrollBuffer: number = 0;
 
     /**
      * Bindings par défaut
@@ -53,18 +57,31 @@ export default class Input extends Component {
         window.addEventListener('mouseup', (e) => {
             this.pressedKeys.delete('Mouse' + e.button);
         });
+
+        // SCROLL
+        window.addEventListener('wheel', (e) => {
+            this.scrollBuffer += e.deltaY;
+        });
     }
 
     /**
      * Check si la touche associée à une action donnée est actuellement pressée
      * @param action
      */
-    isActionDown(action: InputAction): boolean {
+    public isActionDown(action: InputAction): boolean {
         const keys = this.bindings[action];
         return keys.some((key) => this.pressedKeys.has(key));
     }
 
-    getMousePositionRelativeToCoordinates(coords: Vector2): Vector2 {
-        return this.mousePosition.clone().sub(coords);
+    public resolveScroll(deltaY: number) {
+        this.scrollBuffer -= deltaY;
+    }
+
+    public getMousePosition() {
+        return this.mousePosition;
+    }
+
+    public getScrollBuffer() {
+        return this.scrollBuffer;
     }
 }

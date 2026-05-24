@@ -9,11 +9,13 @@ import CorePhysics from './core/components/CorePhysics.ts';
 import Position from './core/components/Position.ts';
 import inputSystem from './core/systems/InputSystem.ts';
 import Input from './core/components/Input.ts';
-import debugSystem from './core/systems/DebugSystem.ts';
+import DebugSystem from './core/systems/DebugSystem.ts';
 import BoundingBox from './core/components/BoundingBox.ts';
 import collisionDetectionSystem from './core/systems/CollisionDetectionSystem.ts';
 import Immovable from './core/components/Immovable.ts';
 import collisionResolutionSystem from './core/systems/CollisionResolutionSystem.ts';
+import { CameraSystem } from './core/systems/CameraSystem.ts';
+import Camera from './core/class/Camera.ts';
 
 /**
  * CANVAS INIT
@@ -34,7 +36,7 @@ window.addEventListener('resize', () => {
 const world = new World();
 
 // PLAYER
-world
+const player = world
     .createEntity()
     .addComponent(
         world.getStore(Input),
@@ -49,8 +51,8 @@ world
     )
     .addComponent(world.getStore(Render), {
         color: 'red',
-        width: 32,
-        height: 32,
+        width: 100,
+        height: 100,
     })
     .addComponent(
         world.getStore(CorePhysics),
@@ -60,7 +62,9 @@ world
         world.getStore(Position),
         new Position(canvas.width / 2, canvas.height / 2)
     )
-    .addComponent(world.getStore(BoundingBox), { width: 32, height: 32 });
+    .addComponent(world.getStore(BoundingBox), { width: 100, height: 100 });
+
+const camera = new Camera(player);
 
 // WALL
 world
@@ -81,20 +85,37 @@ world
     )
     .addComponent(world.getStore(Immovable), new Immovable());
 
+// INIT DEBUG SYSTEM
+new DebugSystem(world, canvas, camera);
+
 let lastTime: number = 0;
 function gameLoop(time: number) {
     const delta = (time - lastTime) / 1000; // TODO - Passer ça en normalisé *60 (diff par rapport à 1)
     lastTime = time;
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
+    // SYSTEMS INIT
+    DebugSystem.init();
+    CameraSystem.init(ctx, camera, canvas);
+    DebugSystem.displayBackgroundGrid();
+
+    // GAMEPLAY SYSTEMS
     inputSystem(world);
     physicsSystem(world, delta);
     collisionDetectionSystem(world);
     collisionResolutionSystem(world);
 
+    CameraSystem.update(world, camera, delta);
     renderSystem(world, ctx);
-    debugSystem(world, ctx);
 
+    // DEBUGS
+    DebugSystem.displayPosition();
+    DebugSystem.displayPhysics();
+    DebugSystem.displayBoundingBox();
+
+    // POST CAMERA RESET
+    CameraSystem.end(ctx);
+    DebugSystem.displayCameraInfos();
     requestAnimationFrame(gameLoop);
 }
 
