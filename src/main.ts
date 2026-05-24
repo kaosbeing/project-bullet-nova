@@ -90,6 +90,7 @@ new DebugSystem(world, canvas, camera);
 
 let lastTime: number = 0;
 function gameLoop(time: number) {
+    // Canvas init - Mandatory stuff
     const delta = (time - lastTime) / 1000; // TODO - Passer ça en normalisé *60 (diff par rapport à 1)
     lastTime = time;
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -105,6 +106,7 @@ function gameLoop(time: number) {
     collisionDetectionSystem(world);
     collisionResolutionSystem(world);
 
+    // RENDERING
     CameraSystem.update(world, camera, delta);
     renderSystem(world, ctx);
 
