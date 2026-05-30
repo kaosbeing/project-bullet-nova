@@ -1,4 +1,4 @@
-import { Vector2 } from '../class/Vector2.ts';
+import { Vector2 } from '../../core/class/Vector2.ts';
 import Component from './Component.ts';
 
 type KeyCode = string;

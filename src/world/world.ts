@@ -1,7 +1,11 @@
-import Entity from './Entity.ts';
-import ComponentStore from './ComponentStore.ts';
-import type Component from '../components/Component.ts';
-import type { CollisionEvent } from './CollisionEvent.ts';
+import Entity from '../core/class/Entity.ts';
+import ComponentStore from '../core/class/ComponentStore.ts';
+import type Component from './components/Component.ts';
+import type { CollisionEvent } from '../core/class/CollisionEvent.ts';
+import inputSystem from './systems/InputSystem.ts';
+import physicsSystem from './systems/PhysicsSystem.ts';
+import collisionResolutionSystem from './systems/CollisionResolutionSystem.ts';
+import collisionDetectionSystem from './systems/CollisionDetectionSystem.ts';
 
 // C'est un hack ce truc mais azy ça marche
 // Dit à TS que c'est pour init la-dite classe T
@@ -15,10 +19,10 @@ export default class World {
     private stores = new Map<Component, ComponentStore<Component>>();
 
     /**
-     * Crées une nouvelle entité.
+     * Crée une nouvelle entité.
      */
     createEntity(): Entity {
-        const e = new Entity(this.nextId++);
+        const e = new Entity(++this.nextId);
         this.entities.push(e);
         return e;
     }
@@ -85,5 +89,12 @@ export default class World {
         }
 
         return result;
+    }
+
+    update(deltaTime: number): void {
+        inputSystem(this);
+        physicsSystem(this, deltaTime);
+        collisionDetectionSystem(this);
+        collisionResolutionSystem(this);
     }
 }

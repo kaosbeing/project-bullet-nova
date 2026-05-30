@@ -1,5 +1,5 @@
-import Camera from '../class/Camera';
-import type World from '../class/world.ts';
+import Camera from '../../core/class/Camera.ts';
+import type World from '../world.ts';
 import Position from '../components/Position.ts';
 import Input from '../components/Input.ts';
 
@@ -45,6 +45,7 @@ export class CameraSystem {
     ) {
         ctx.save();
 
+        // Que la "position" de la cam soit au centre, pas en haut à gauche
         ctx.translate(canvas.width * 0.5, canvas.height * 0.5);
 
         // Scale par rapport au zoom
